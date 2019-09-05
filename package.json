@@ -1,0 +1,22 @@
+{
+  "name": "vue-router-auto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ngaiwe/vue-router-auto.git",
+  "author": "ngaiwe",
+  "license": "MIT",
+  "files": [
+    "lib/",
+    "index.js"
+  ],
+  "dependencies": {
+    "chokidar": "^3.0.2",
+    "glob": "^7.1.4"
+  },
+  "keywords": [
+    "webpack",
+    "plugin",
+    "router",
+    "vue-router"
+  ]
+}
