@@ -2,8 +2,7 @@
   "name": "vue-router-auto",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:ngaiwe/vue-router-auto.git",
-  "author": "ngaiwe",
+  "author": "ngaiwe (ngaiwe@126.com)",
   "license": "MIT",
   "files": [
     "lib/",
@@ -18,5 +17,7 @@
     "plugin",
     "router",
     "vue-router"
-  ]
+  ],
+  "bugs": "https://github.com/ngaiwe/vue-router-auto/issues",
+  "repository": "https://github.com/ngaiwe/vue-router-auto"
 }
