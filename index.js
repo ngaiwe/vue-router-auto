@@ -17,7 +17,7 @@
 const glob = require("glob")
 const fs = require('fs')
 const chokidar = require('chokidar');
-const recursiveRoutes = require("./lib/recursive_routes.js.js")
+const recursiveRoutes = require("./RecursiveRoutes.js")
 
 class CreateRouter {
   constructor(options = {}) {

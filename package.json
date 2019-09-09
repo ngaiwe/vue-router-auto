@@ -1,8 +1,9 @@
 {
-  "name": "vue-router-auto",
-  "version": "1.0.0",
+  "name": "router-auto",
+  "version": "1.0.2",
   "main": "index.js",
   "author": "ngaiwe (ngaiwe@126.com)",
+  "private": false,
   "license": "MIT",
   "files": [
     "lib/",
