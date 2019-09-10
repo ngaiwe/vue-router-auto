@@ -20,5 +20,9 @@
     "vue-router"
   ],
   "bugs": "https://github.com/ngaiwe/vue-router-auto/issues",
-  "repository": "https://github.com/ngaiwe/vue-router-auto"
+  "repository": "https://github.com/ngaiwe/vue-router-auto",
+  "devDependencies": {
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.3"
+  }
 }
