@@ -17,12 +17,12 @@
 const glob = require("glob")
 const fs = require('fs')
 const chokidar = require('chokidar');
-const recursiveRoutes = require("./RecursiveRoutes.js")
+const RecursiveRoutes = require("./lib/recursive_routes.js")
 
 class CreateRouter {
   constructor(options = {}) {
     this.options = options
-    this.root = process.cwd()
+    this.root = this.options.contentBase || process.cwd()
     this.page = `${this.root}/src/page`
     this.compiler = null
     this.pathNames = null
@@ -119,7 +119,7 @@ class CreateRouter {
   // 写入router.js文件
   writeRouter(pathNames) {
     let routes = pathNames.map(pathName => this.addRoutes(pathName))
-    let router = recursiveRoutes(this.options, routes) // 生成模板
+    let router = RecursiveRoutes(this.options, routes) // 生成模板
     fs.writeFileSync(`${this.root}/src/.router.js`, router) // 需要写入内存
   }
   // 向main中注册router
@@ -143,6 +143,7 @@ class CreateRouter {
         router = router.join('\n')
         mains.splice(index + 1, 1, router)
       }
+      console.log()
       fs.writeFileSync(`${this.root}/src/main.js`, mains.join('from'))
     } else {
       void null
@@ -160,8 +161,17 @@ class CreateRouter {
   }
   // 获取main.js文件内容
   getMain() {
-    let entrys = Object.entries(this.compiler.options.entry),
-      main = entrys[0][1].split('/')
+    let entry = this.compiler.options.entry,
+      main = new Array(),
+      _path = '';
+    if (this.isArray(entry)) {
+      // 多入口
+      main = Object.entries(entry)[0][1].split('/')
+    } else {
+      // 单入口
+      main = entry.split('/')
+    }
+    _path = `${this.root}/src/${main[main.length-1]}`
     return fs.readFileSync(`${this.root}/src/${main[main.length-1]}`)
   }
   // 查找匹配路由文件
@@ -201,6 +211,10 @@ class CreateRouter {
   // 查看当前符合的标准文件
   isTrue(_path, value) {
     return _path.indexOf(value) === -1 ? false : true
+  }
+  // 判断是否为数组
+  isArray(value) {
+    return Object.prototype.toString.call(value) === '[object Array]'
   }
   // 处理meta
   dealRoute(value) {
