@@ -164,8 +164,8 @@ class CreateRouter {
     let entry = this.compiler.options.entry,
       main = new Array(),
       _path = '';
-    if (this.isArray(entry)) {
-      // 多入口
+    if (this.isObject(entry)) {
+      // 对象形式入口 --- 后期需要修改
       main = Object.entries(entry)[0][1].split('/')
     } else {
       // 单入口
@@ -215,6 +215,10 @@ class CreateRouter {
   // 判断是否为数组
   isArray(value) {
     return Object.prototype.toString.call(value) === '[object Array]'
+  }
+  // 判断是否为对象
+  isObject(value) {
+    return Object.prototype.toString.call(value) === '[object Object]'
   }
   // 处理meta
   dealRoute(value) {
