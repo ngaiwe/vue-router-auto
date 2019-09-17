@@ -14,7 +14,8 @@ export default new Router({
     routes:[{
       path: '/helloworld/index',
       name: 'helloworld',
-      component: helloworld
+      component: helloworld,
+      meta:{title:'helloworld'},access:[1,2,3]
     }]
 })
   
