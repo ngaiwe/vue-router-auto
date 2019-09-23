@@ -81,7 +81,8 @@ const devWebpackConfig = {
     }),
     new CreateRouter({
       contentBase: path.resolve(__dirname),
-      base: '/auto/'
+      base: '/auto/',
+      watcher: true
     })
   ]
 }
