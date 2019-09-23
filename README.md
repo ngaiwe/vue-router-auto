@@ -76,6 +76,7 @@ export default new Router({
 | contentBase | 根目录即src平级目录 | String | 当前根目录process.cwd() | 否
 | mode | router中mode | String | history | 否 |
 | base | router中base | String | /auto/ | 否 |
+| watcher | 是否启用热更新(请在dev环境启用) | Boolean | false | 否 |
 
 ### 7.router额外配置
 > xxx目录下的router.js文件配置

@@ -26,7 +26,11 @@ class CreateRouter {
     this.page = `${this.root}/src/page`
     this.compiler = null
     this.pathNames = null
-    this.watchPage()
+    if (this.options.watcher) {
+      this.watchPage()
+    } else {
+      void null
+    }
   }
   // plugin入口
   apply(compiler) {
