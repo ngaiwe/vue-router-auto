@@ -41,9 +41,10 @@ class CreateRouter {
   // 监听page下Index变化
   watchPage() {
     this.watcher = chokidar.watch(this.page, {
-      ignored: !/.+Index.vue/,
       ignoreInitial: true, // 忽略add和unlink过程派发事件
-      persistent: true // 是否在监听的时候继续进程
+      persistent: true, // 是否在监听的时候继续进程
+      useFsEvents: false,
+      usePolling: false
     });
     this.watcher
       .on('add', path => this._add(path))
@@ -66,6 +67,7 @@ class CreateRouter {
   }
   // 增加文件
   _add(_path) {
+    console.log(this.watcher.getWatched())
     if (this.isTrue(_path, 'Index.vue')) {
       let currentPathName = this.getCurrentRoutePathName(_path)
       try {
