@@ -6,7 +6,11 @@ import Router from 'vue-router'
   
 import helloworld from '@/page/helloworld/Index.vue'
 
-import test from '@/page/test/Index.vue'
+import demo from '@/page/demo/Index.vue'
+
+import demo_test from '@/page/demo/test/Index.vue'
+
+import home from '@/page/home/Index.vue'
   
 Vue.use(Router)
   
@@ -17,11 +21,19 @@ export default new Router({
       path: '/helloworld/index',
       name: 'helloworld',
       component: helloworld,
-      meta:{title:'helloworld'},access:[1,2,3]
+      meta:{title:'测试demo'},access:[1,2,3]
     },{
-      path: '/test/index',
-      name: 'test',
-      component: test
+      path: '/demo/index',
+      name: 'demo',
+      component: demo
+    },{
+      path: '/demo/test/index',
+      name: 'demo_test',
+      component: demo_test
+    },{
+      path: '/home/index',
+      name: 'home',
+      component: home
     }]
 })
   
