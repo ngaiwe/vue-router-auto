@@ -62,7 +62,7 @@ class CreateRouter {
     let indexPathNames = this.getRoutePathNames(this.getFiles('Index.vue'))
     // 遍历router mate
     let metas = this.getRouteMetas(this.getFiles('router.js'))
-    this.pathNames = this.dealMetasToIndexPathNames(indexPathNames, metas)
+    this.pathNames = this.dealChildren(this.dealMetasToIndexPathNames(indexPathNames, metas))
     this.writeRouter(this.pathNames)
   }
   // 增加文件
@@ -149,7 +149,6 @@ class CreateRouter {
         router = router.join('\n')
         mains.splice(index + 1, 1, router)
       }
-      console.log()
       fs.writeFileSync(`${this.root}/src/main.js`, mains.join('from'))
     } else {
       void null
@@ -161,7 +160,8 @@ class CreateRouter {
       name: `${value.name}`,
       path: `/${value.path}/index`,
       componentPath: `@/page/${value.path}/Index.vue`,
-      meta: value.meta || ""
+      meta: value.meta || "",
+      children: value.children || ""
     }
     return route
   }
@@ -186,13 +186,25 @@ class CreateRouter {
   }
   // 匹配路由参数
   getRoutePathNames(values) {
-    let reg = new RegExp(`${this.page}/(.+)/.+`, 'i')
+    let reg = new RegExp(`${this.page}/(.+)/.+`, 'i'),
+      children = '/children'
     return values.map(item => {
-      let _path = reg.exec(item)[1]
-      let _name = _path.split('/').join('_')
+      let _path = reg.exec(item)[1],
+        _name = _path.split('/').join('_'),
+        relation = null,
+        length = _path.indexOf(children)
+      if (length === -1) {
+        // 没有子路由
+      } else {
+        // 有子路由
+        relation = _name.slice(0, _name.lastIndexOf('_children'))
+        _path = _path.slice(length + children.length + 1)
+      }
       return {
         name: _name,
-        path: _path
+        path: _path,
+        childrenStatus: length === -1 ? false : true,
+        relation
       }
     })
   }
@@ -225,6 +237,18 @@ class CreateRouter {
   // 判断是否为对象
   isObject(value) {
     return Object.prototype.toString.call(value) === '[object Object]'
+  }
+  // 处理children子路由
+  dealChildren(_paths) {
+    let childrens = _paths.filter(_path => _path.childrenStatus),
+    fathers = _paths.filter(_path => !_path.childrenStatus)
+    return fathers.map(father => {
+      let childs = childrens.filter(children => children.relation === father.name)
+      return {
+        ...father,
+        children: JSON.stringify(childs)
+      }
+    })
   }
   // 处理meta
   dealRoute(value) {
