@@ -62,7 +62,8 @@ class CreateRouter {
     let indexPathNames = this.getRoutePathNames(this.getFiles('Index.vue'))
     // 遍历router mate
     let metas = this.getRouteMetas(this.getFiles('router.js'))
-    this.pathNames = this.dealChildren(this.dealMetasToIndexPathNames(indexPathNames, metas))
+    let _paths = this.dealMetasToIndexPathNames(indexPathNames, metas)
+    this.pathNames = this.dealChildren(_paths)
     this.writeRouter(this.pathNames)
   }
   // 增加文件
@@ -84,7 +85,7 @@ class CreateRouter {
       } catch (error) {
         void null
       }
-      this.pathNames = [...this.pathNames, currentPathName]
+      this.pathNames = this.dealChildren([...this.pathNames, currentPathName])
       this.writeRouter(this.pathNames)
     } else if (this.isTrue(_path, 'router.js')) {
       this.pathNames = this.dealMetaToIndexPathNames(this.pathNames, _path)
@@ -97,7 +98,7 @@ class CreateRouter {
   _delete(_path) {
     if (this.isTrue(_path, 'Index.vue')) {
       let currentPathName = this.getCurrentRoutePathName(_path)
-      this.pathNames = this.pathNames.filter(pathName => pathName.name != currentPathName['name'])
+      this.pathNames = this.dealChildren(this.pathNames.filter(pathName => pathName.name != currentPathName['name']))
       this.writeRouter(this.pathNames)
     } else if (this.isTrue(_path, 'router.js')) {
       let meta = this.getRouteMetas(_path, false)
@@ -192,7 +193,8 @@ class CreateRouter {
       let _path = reg.exec(item)[1],
         _name = _path.split('/').join('_'),
         relation = null,
-        length = _path.indexOf(children)
+        length = _path.lastIndexOf(children),
+        componentPath = `@/page/${_path}/Index.vue`
       if (length === -1) {
         // 没有子路由
       } else {
@@ -203,7 +205,9 @@ class CreateRouter {
       return {
         name: _name,
         path: _path,
+        componentPath,
         childrenStatus: length === -1 ? false : true,
+        key: length,
         relation
       }
     })
@@ -240,15 +244,32 @@ class CreateRouter {
   }
   // 处理children子路由
   dealChildren(_paths) {
-    let childrens = _paths.filter(_path => _path.childrenStatus),
-    fathers = _paths.filter(_path => !_path.childrenStatus)
-    return fathers.map(father => {
-      let childs = childrens.filter(children => children.relation === father.name)
-      return {
-        ...father,
-        children: JSON.stringify(childs)
-      }
-    })
+    let childrens = _paths.filter(_path => _path.childrenStatus)
+    // 查找出最大的key说明是最小的子元素
+    if (Boolean(childrens.length)) {
+      // 当前_paths含有子路由
+      let maxKey = Math.max.apply(null, childrens.map(children => children.key))
+      console.log(childrens.map(children => children.key))
+      // 获取当前所有最小子路由
+      let maxChildrens = childrens.filter(children => children.key == maxKey)
+      // 最小子路由添加到父路由
+      _paths = _paths.map(_path => {
+        let childs = maxChildrens.filter(maxChildren => maxChildren.relation === _path.name)
+        if (Boolean(childs.length)) {
+          return {
+            ..._path,
+            children: JSON.stringify(childs)
+          }
+        } else {
+          return _path
+        }
+      })
+      // 删除当前_path所有最小路由
+      let newPaths = _paths.filter(_path => maxChildrens.findIndex(minChildren => minChildren.name === _path.name) === -1?true:false)
+      return this.dealChildren(newPaths)
+    } else {
+      return _paths
+    }
   }
   // 处理meta
   dealRoute(value) {
