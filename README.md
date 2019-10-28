@@ -80,6 +80,7 @@ export default new Router({
 | mode | router中mode | String | history | 否 |
 | base | router中base | String | /auto/ | 否 |
 | watcher | 是否启用热更新(请在dev环境启用) | Boolean | false | 否 |
+| changeMain | 是否启动修改main文件 | Boolean | false | 否 |
 
 ## router额外配置
 > xxx目录下的router.js文件配置

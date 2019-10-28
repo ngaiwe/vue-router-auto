@@ -36,8 +36,12 @@ class CreateRouter {
   apply(compiler) {
     this.compiler = compiler
     this.init()
-    this.changeMain()
-  }
+    if (this.options.changeMain) {
+      this.changeMain()
+    } else {
+      void null
+    }
+   }
   // 监听page下Index变化
   watchPage() {
     this.watcher = chokidar.watch(this.page, {
