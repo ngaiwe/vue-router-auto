@@ -76,7 +76,7 @@ export default new Router({
 
 | 参数 | 说明 | 类型 | 默认值 | 必填项
 | --- | --- | --- | --- | --- |
-| contentBase | 根目录即src平级目录 | String | 当前根目录process.cwd() | 否
+| contentBase | page上层目录 | String | process.cwd()/src | 否
 | mode | router中mode | String | history | 否 |
 | base | router中base | String | /auto/ | 否 |
 | watcher | 是否启用热更新(请在dev环境启用) | Boolean | false | 否 |
