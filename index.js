@@ -22,8 +22,8 @@ const RecursiveRoutes = require("./lib/recursive_routes.js")
 class CreateRouter {
   constructor(options = {}) {
     this.options = options
-    this.root = this.options.contentBase || process.cwd()
-    this.page = `${this.root}/src/page`
+    this.root = this.options.contentBase || `${process.cwd()}/src`
+    this.page = `${this.root}/page`
     this.compiler = null
     this.pathNames = null
     if (this.options.watcher) {
@@ -130,7 +130,7 @@ class CreateRouter {
   writeRouter(pathNames) {
     let routes = pathNames.map(pathName => this.addRoutes(pathName))
     let router = RecursiveRoutes(this.options, routes) // 生成模板
-    fs.writeFileSync(`${this.root}/src/.router.js`, router) // 需要写入内存
+    fs.writeFileSync(`${this.root}/.router.js`, router) // 需要写入内存
   }
   // 向main中注册router
   changeMain() {
@@ -154,7 +154,7 @@ class CreateRouter {
         mains.splice(index + 1, 1, router)
       }
       console.log()
-      fs.writeFileSync(`${this.root}/src/main.js`, mains.join('from'))
+      fs.writeFileSync(`${this.root}/main.js`, mains.join('from'))
     } else {
       void null
     }
@@ -181,8 +181,8 @@ class CreateRouter {
       // 单入口
       main = entry.split('/')
     }
-    _path = `${this.root}/src/${main[main.length-1]}`
-    return fs.readFileSync(`${this.root}/src/${main[main.length-1]}`)
+    _path = `${this.root}/${main[main.length-1]}`
+    return fs.readFileSync(`${this.root}/${main[main.length-1]}`)
   }
   // 查找匹配路由文件
   getFiles(type) {
