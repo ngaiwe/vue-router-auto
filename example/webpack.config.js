@@ -67,7 +67,7 @@ const devWebpackConfig = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': path.join(__dirname, 'src'),
+      '&': path.join(__dirname, 'src'),
     }
   },
   plugins: [
@@ -80,9 +80,10 @@ const devWebpackConfig = {
       inject: true
     }),
     new CreateRouter({
-      contentBase: path.resolve(__dirname),
+      contentBase: `${path.resolve(__dirname)}/src`,
       base: '/auto/',
-      watcher: true
+      watcher: true,
+      tag: '&'
     })
   ]
 }
