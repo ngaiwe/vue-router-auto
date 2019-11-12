@@ -23,6 +23,7 @@ class CreateRouter {
   constructor(options = {}) {
     this.options = options
     this.root = this.options.contentBase || `${process.cwd()}/src`
+    this.tag = this.options.tag || '@'
     this.page = `${this.root}/page`
     this.compiler = null
     this.pathNames = null
@@ -137,10 +138,10 @@ class CreateRouter {
     let content = this.getMain().toString(),
       mains = content.split('from'),
       index = mains.findIndex(main => main.indexOf('router') === -1 ? false : true)
-    if (content.indexOf('@/.router.js') == -1) {
+    if (content.indexOf(`${this.tag}/.router.js`) == -1) {
       if (index == -1) {
         // 不存在
-        mains[0] = `import router from '@/.router.js'\n${mains[0]}`
+        mains[0] = `import router from '${this.tag}/.router.js'\n${mains[0]}`
         let key = mains.findIndex(main => main.indexOf('render') === -1 ? false : true)
         let els = mains[key].split('\n')
         let elKey = els.findIndex(main => main.indexOf('el') == -1 ? false : true)
@@ -149,7 +150,7 @@ class CreateRouter {
       } else {
         let router = mains[index + 1].split('\n')
         router.shift()
-        router.unshift(` '@/.router.js'`)
+        router.unshift(` '${this.tag}/.router.js'`)
         router = router.join('\n')
         mains.splice(index + 1, 1, router)
       }
@@ -164,7 +165,7 @@ class CreateRouter {
     let route = {
       name: `${value.name}`,
       path: `/${value.path}/index`,
-      componentPath: `@/page/${value.path}/Index.vue`,
+      componentPath: `${this.tag}/page/${value.path}/Index.vue`,
       meta: value.meta || ""
     }
     return route
