@@ -41,9 +41,6 @@ module.exports = {
 ```
 import Vue from 'vue'
 import Router from 'vue-router'
-import helloworld from '@/page/helloworld/Index.vue'
-import demo from '@/page/demo/Index.vue'
-import demo_test from '@/page/demo/test/Index.vue'
   
 Vue.use(Router)
   
@@ -53,15 +50,15 @@ export default new Router({
     routes:[{
       path: '/helloworld/index',
       name: 'helloworld',
-      component: helloworld
+      component: _ => import('@/page/helloworld/Index.vue')
     },{
       path: '/demo/index',
       name: 'demo',
-      component: demo
+      component: _ => import('@/page/demo/Index.vue')
     },{
       path: '/demo/test/index',
       name: 'demo_test',
-      component: demo_test
+      component: _ => import('@/page/demo/test/Index.vue')
     }]
 })
 ```
@@ -101,7 +98,6 @@ export default {
 ```
 import Vue from 'vue' 
 import Router from 'vue-router' 
-import helloworld from '@/page/helloworld/Index.vue'
   
 Vue.use(Router)
   
@@ -111,7 +107,7 @@ export default new Router({
     routes:[{
       path: '/helloworld/index',
       name: 'helloworld',
-      component: helloworld,
+      component: _ => import('@/page/helloworld/Index.vue'),
       meta:{title:'helloworld'},access:[1,2,3]
     }]
 })
