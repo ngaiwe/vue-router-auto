@@ -72,7 +72,6 @@ class CreateRouter {
   }
   // 增加文件
   _add(_path) {
-    console.log(this.watcher.getWatched())
     if (this.isTrue(_path, 'Index.vue')) {
       let currentPathName = this.getCurrentRoutePathName(_path)
       try {
@@ -154,7 +153,6 @@ class CreateRouter {
         router = router.join('\n')
         mains.splice(index + 1, 1, router)
       }
-      console.log()
       fs.writeFileSync(`${this.root}/main.js`, mains.join('from'))
     } else {
       void null
