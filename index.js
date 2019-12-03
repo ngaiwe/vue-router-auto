@@ -64,6 +64,7 @@ class CreateRouter {
   }
   // 初始化
   init() {
+    console.log(this.getFiles('Index.vue'))
     let indexPathNames = this.getRoutePathNames(this.getFiles('Index.vue'))
     // 遍历router mate
     let metas = this.getRouteMetas(this.getFiles('router.js'))
@@ -185,7 +186,9 @@ class CreateRouter {
   }
   // 查找匹配路由文件
   getFiles(type) {
-    return glob.sync(`${this.page}/**/${type}`)
+    return glob.sync(`${this.page}/**/${type}`, {
+      nocase: true
+    }).filter(item => this.isTrue(item, type))
   }
   // 匹配路由参数
   getRoutePathNames(values) {
