@@ -64,7 +64,6 @@ class CreateRouter {
   }
   // 初始化
   init() {
-    console.log(this.getFiles('Index.vue'))
     let indexPathNames = this.getRoutePathNames(this.getFiles('Index.vue'))
     // 遍历router mate
     let metas = this.getRouteMetas(this.getFiles('router.js'))
